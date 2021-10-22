@@ -7,7 +7,7 @@ const TaskName = styled.div`
     font-size: 24px;
     font-weight: bold;
     letter-spacing: 1.2px;
-    margin-top: 100px;
+    margin-top: 180px;
     margin-bottom: 72px;
 `;
 
