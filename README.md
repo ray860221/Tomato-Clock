@@ -4,6 +4,7 @@
 ### `yarn`
 Install some requirement package
 ### `yarn start`
+If you start the program successfully, you'll see the message below.
 
     Compiled successfully!
 
