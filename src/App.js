@@ -4,7 +4,7 @@ import InitialClock from './InitialClock'
 import AddTask from './AddTask'
 import Clock from './Clock'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faBars, faChartBar, faMusic } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faBars, faChartBar, faMusic, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const Wrap = styled.div`
   	display: flex;
@@ -14,10 +14,11 @@ const Wrap = styled.div`
 `;
 const MainBlock = styled.div`
   	display: flex;
-  	width: 50%;
+  	width: ${props=> props.barExpand?'50%':'100%'};
   	background: #EAEAEA;
   	flex-direction: column;
   	align-items: center;
+	transition: width 1s ease-in-out;
 `;
 const MainFooter = styled.div`
   	position: fixed;
@@ -28,13 +29,15 @@ const MainFooter = styled.div`
 
 const NavBlock = styled.div`
   	display: flex;
-  	width: 50%;
+  	width: ${props=> props.barExpand?'50%':'80px'};
   	background: #333333;
+	transition: width 1s ease-in-out;
 `;
 
 const NavBar = styled.div`
   	width: 80px;
   	border-right: 2px solid #414141;
+	position: relative;
 `;
 const NavIcon = styled.div`
 	height: 80px;
@@ -53,10 +56,46 @@ const NavContent = styled.div`
 	flex-grow: 1;
 	padding: 0 34px;
 `;
+
+const SlideBtn = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	width: 90px;
+	height: 50px;
+	background: #FCFCFC;
+	border-radius: 25px 5px 5px 25px;
+	bottom: 14px;
+    left: -24px;
+	cursor: pointer; 
+`;
+const TomatoIcon = styled.div`
+	margin-right: 20px;
+	width: 25px;
+	height: 25px;
+	background: #EA5548;
+	border-radius: 50%;
+	position: relative;
+`;
+const TomatoIconLeaf = styled.div`
+	width: 5px;
+	height: 6.25px;
+	background: #316901;
+	border-radius: 50px;
+	position: absolute;
+	right: 0px;
+	transform: translate(-1px, 0.5px) rotate(45deg);
+`;
+
 const App = () => {
 
 	const [nav, setNav] = useState('add');
 	const [task, setTask] = useState([]);
+	const [barExpand, setBarExpand] = useState(1);
+	const [barExpandTrans, setBarExpandTrans] = useState(1);
+
+
 
 	useEffect(()=>{
 		console.log(task)
@@ -64,13 +103,17 @@ const App = () => {
 
   	return (
     	<Wrap>
-    		<MainBlock>
+    		<MainBlock barExpand={barExpand}>
 				{task.length === 0?<InitialClock />:<Clock task={task[0]}/>}
     	    	<MainFooter>
     	    		PODOMORO
     	    	</MainFooter>
     		</MainBlock>
-    		<NavBlock>
+    		<NavBlock barExpand={barExpand} onTransitionEnd={() => {
+				if(barExpand){
+					setBarExpandTrans(1)
+				}
+			}}>
     	    	<NavBar>
 					<NavIcon onClick={() => setNav('add')} active={nav === 'add'}>
 						<FontAwesomeIcon icon={faPlusCircle} size="lg"/>
@@ -84,10 +127,26 @@ const App = () => {
 					<NavIcon onClick={() => setNav('music')} active={nav === 'music'}>
 						<FontAwesomeIcon icon={faMusic} size="lg"/>
 					</NavIcon>
+					<SlideBtn onClick={() => {
+						if(barExpand){
+							setBarExpand(!barExpand);
+							setBarExpandTrans(0);
+						}
+						else setBarExpand(!barExpand);
+					}}>
+						<TomatoIcon>
+							<TomatoIconLeaf />
+						</TomatoIcon>
+						<FontAwesomeIcon icon={faArrowRight} size="lg"/>
+					</SlideBtn>
     	    	</NavBar>
-    	    	<NavContent>
-					<AddTask task={task} setTask={setTask}/>
-    	    	</NavContent>
+				{barExpandTrans?
+					<NavContent onTransitionEnd={() => console.log(1)}>
+						<AddTask task={task} setTask={setTask}/>
+					</NavContent>
+				:
+					<></>
+				}
     	  	</NavBlock>
 		</Wrap>
 	);

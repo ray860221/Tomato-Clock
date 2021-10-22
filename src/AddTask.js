@@ -103,7 +103,7 @@ const AddTask = (props) => {
                 <AddTaskBtn onClick={()=>{
                     props.setTask([...props.task, {
                     name: name,
-                    second: (time+1)*600,
+                    second: (time+1)*300,
                     }]);
                     setName('');
                     setTime(0);
