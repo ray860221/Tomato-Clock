@@ -102,8 +102,9 @@ const AddTask = (props) => {
                 {/* <AddTaskBtn onClick={()=>console.log(`Create Task: Name: ${name}, Time: ${(time+1)*10} min`)}> */}
                 <AddTaskBtn onClick={()=>{
                     props.setTask([...props.task, {
-                    name: name,
-                    second: (time+1)*300,
+                        name: name,
+                        second: (time+1)*300,
+                        tomatos: time+1,
                     }]);
                     setName('');
                     setTime(0);

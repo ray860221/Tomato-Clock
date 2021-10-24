@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import InitialClock from './InitialClock'
 import AddTask from './AddTask'
+import TaskList from './TaskList'
 import Clock from './Clock'
+import TomatoIcon from './TomatoIcon'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faBars, faChartBar, faMusic, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
@@ -60,7 +62,7 @@ const NavContent = styled.div`
 const SlideBtn = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 	position: absolute;
 	width: 90px;
 	height: 50px;
@@ -69,23 +71,6 @@ const SlideBtn = styled.div`
 	bottom: 14px;
     left: -24px;
 	cursor: pointer; 
-`;
-const TomatoIcon = styled.div`
-	margin-right: 20px;
-	width: 25px;
-	height: 25px;
-	background: #EA5548;
-	border-radius: 50%;
-	position: relative;
-`;
-const TomatoIconLeaf = styled.div`
-	width: 5px;
-	height: 6.25px;
-	background: #316901;
-	border-radius: 50px;
-	position: absolute;
-	right: 0px;
-	transform: translate(-1px, 0.5px) rotate(45deg);
 `;
 
 const App = () => {
@@ -134,15 +119,18 @@ const App = () => {
 						}
 						else setBarExpand(!barExpand);
 					}}>
-						<TomatoIcon>
-							<TomatoIconLeaf />
-						</TomatoIcon>
+						<TomatoIcon size="m"/>
 						<FontAwesomeIcon icon={faArrowRight} size="lg"/>
 					</SlideBtn>
     	    	</NavBar>
 				{barExpandTrans?
-					<NavContent onTransitionEnd={() => console.log(1)}>
-						<AddTask task={task} setTask={setTask}/>
+					<NavContent>
+						{nav === 'add'?
+							<AddTask task={task} setTask={setTask}/>
+						:
+							<TaskList task={task} setTask={setTask}/>
+						}
+						
 					</NavContent>
 				:
 					<></>
