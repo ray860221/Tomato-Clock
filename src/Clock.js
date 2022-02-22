@@ -3,18 +3,25 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faUndo } from '@fortawesome/free-solid-svg-icons'
 
+
+const Container = styled.div`
+    position: relative;
+`;
 const TaskName = styled.div`
+    text-align: center;
+    position: absolute;
     font-size: 24px;
     font-weight: bold;
     letter-spacing: 1.2px;
-    margin-top: 180px;
-    margin-bottom: 72px;
+    top: -30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `;
 
 const Tomato = styled.div`
     width: 300px;
     height: 300px;
-    background: #EA5548;
+    background: ${props=>props.status === 'working'?'#EA5548':'#B5E254'};
     border-radius: 50%;
     background-image: linear-gradient(to right, transparent 50%, #ACACAC 0);
     overflow: hidden;
@@ -25,7 +32,7 @@ const Tomato = styled.div`
         display: block;
         margin-left: 50%;
         height: 100%;
-        background: ${props=>props.angel>180?'#ACACAC':'#EA5548'};
+        background: ${props=>props.angel>180?'#ACACAC':props.status ==='working'?'#EA5548':'#B5E254'};
         transform-origin: left;
         transform: ${props=>props.angel>180?`rotate(${props.angel-180}deg)`:`rotate(${props.angel}deg)`};
     }
@@ -67,11 +74,25 @@ const Clock = (props) => {
 
     const [timerId, setTimerId] = useState();
     const [taskNowSec, setTaskNowSec] = useState();
+    const [task, setTask] = useState();
 
     useEffect(()=>{
+        // console.log('render',)
         if (props)
             setTaskNowSec(props.task.second);
+            setTask(props.task);
     }, [props]);
+
+    useEffect(() => {
+        if(taskNowSec === 0){
+            stopCount(timerId);
+            if(task.status === 'working'){
+                setTaskNowSec(300);
+                setTask({...task, second: 300, status: 'break'});
+                setTimerId(startCount());
+            }
+        }
+    }, [taskNowSec]);
 
     const startCount = () => {
         return window.setInterval(( () => setTaskNowSec(taskNowSec => taskNowSec-1) ), 1000);
@@ -81,7 +102,7 @@ const Clock = (props) => {
     };
     const undoCount = (timerId) => {
         window.clearInterval(timerId);
-        setTaskNowSec(props.task.second);
+        setTaskNowSec(task.second);
     };
     const timeFormat = (time) => {
         let min = parseInt(time / 60);
@@ -93,9 +114,9 @@ const Clock = (props) => {
     };
 
     return (
-        <>
-            <TaskName>{props.task.name}</TaskName>
-            <Tomato angel={360*(props.task.second - taskNowSec)/props.task.second}>
+        <Container>
+            <TaskName>{task && task.name}</TaskName>
+            <Tomato status={task ? task.status : 'working'} angel={task && 360*(task.second - taskNowSec)/task.second}>
                 <TomatoText>
                     {timeFormat(taskNowSec)}
                 </TomatoText>
@@ -111,8 +132,12 @@ const Clock = (props) => {
 					<FontAwesomeIcon icon={faUndo} size="lg"/>
 				</OperationIcon>
             </Operation>
-        </>
+        </Container>
     );
-}
+};
 
-export default Clock;
+const isEqual = (prevProps, nextProps) => {
+    return prevProps.name === nextProps.name;
+};
+
+export default React.memo(Clock, isEqual);

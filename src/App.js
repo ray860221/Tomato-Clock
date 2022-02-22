@@ -19,7 +19,8 @@ const MainBlock = styled.div`
   	width: ${props=> props.barExpand?'50%':'100%'};
   	background: #EAEAEA;
   	flex-direction: column;
-  	align-items: center;
+	align-items: center;
+	justify-content: center;  
 	transition: width 1s ease-in-out;
 `;
 const MainFooter = styled.div`
@@ -76,7 +77,7 @@ const SlideBtn = styled.div`
 const App = () => {
 
 	const [nav, setNav] = useState('add');
-	const [task, setTask] = useState([]);
+	const [task, setTask] = useState({});
 	const [barExpand, setBarExpand] = useState(1);
 	const [barExpandTrans, setBarExpandTrans] = useState(1);
 
@@ -89,7 +90,7 @@ const App = () => {
   	return (
     	<Wrap>
     		<MainBlock barExpand={barExpand}>
-				{task.length === 0?<InitialClock />:<Clock task={task[0]}/>}
+				{Object.keys(task).length === 0?<InitialClock />:<Clock task={task}/>}
     	    	<MainFooter>
     	    		PODOMORO
     	    	</MainFooter>
@@ -103,12 +104,12 @@ const App = () => {
 					<NavIcon onClick={() => setNav('add')} active={nav === 'add'}>
 						<FontAwesomeIcon icon={faPlusCircle} size="lg"/>
 					</NavIcon>
-					<NavIcon onClick={() => setNav('task')} active={nav === 'task'}>
+					{/* <NavIcon onClick={() => setNav('task')} active={nav === 'task'}>
 						<FontAwesomeIcon icon={faBars} size="lg"/>
 					</NavIcon>
 					<NavIcon onClick={() => setNav('chart')} active={nav === 'chart'}>
 						<FontAwesomeIcon icon={faChartBar} size="lg"/>
-					</NavIcon>
+					</NavIcon> */}
 					<NavIcon onClick={() => setNav('music')} active={nav === 'music'}>
 						<FontAwesomeIcon icon={faMusic} size="lg"/>
 					</NavIcon>

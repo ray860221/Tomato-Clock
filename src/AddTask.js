@@ -101,11 +101,12 @@ const AddTask = (props) => {
                 </AddTaskTomato>
                 {/* <AddTaskBtn onClick={()=>console.log(`Create Task: Name: ${name}, Time: ${(time+1)*10} min`)}> */}
                 <AddTaskBtn onClick={()=>{
-                    props.setTask([...props.task, {
+                    props.setTask({
                         name: name,
-                        second: (time+1)*300,
+                        second: 1500,
+                        status: 'working',
                         tomatos: time+1,
-                    }]);
+                    });
                     setName('');
                     setTime(0);
                 }}>

@@ -5,7 +5,6 @@ const TomatoClock = styled.div`
   height: 300px;
   background: #EA5548;
   border-radius: 50%;
-  margin-top: 280px;
   margin-bottom: 50px;
   position: relative;
 `;
