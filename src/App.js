@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import ReactPlayer from 'react-player/youtube'
 import InitialClock from './InitialClock'
 import AddTask from './AddTask'
-import TaskList from './TaskList'
+import MusicList from './MusicList'
 import Clock from './Clock'
 import TomatoIcon from './TomatoIcon'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faBars, faChartBar, faMusic, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faMusic, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const Wrap = styled.div`
   	display: flex;
@@ -21,7 +22,7 @@ const MainBlock = styled.div`
   	flex-direction: column;
 	align-items: center;
 	justify-content: center;  
-	transition: width 1s ease-in-out;
+	transition: width .5s ease-in-out;
 `;
 const MainFooter = styled.div`
   	position: fixed;
@@ -32,15 +33,16 @@ const MainFooter = styled.div`
 
 const NavBlock = styled.div`
   	display: flex;
-  	width: ${props=> props.barExpand?'50%':'80px'};
+  	flex: ${props=> props.barExpand?'0 0 50%':'0 0 80px'};
   	background: #333333;
-	transition: width 1s ease-in-out;
+	transition: flex .5s ease-in-out;
 `;
 
 const NavBar = styled.div`
-  	width: 80px;
-  	border-right: 2px solid #414141;
+	flex: 0 0 80px;
+  	border-right: ${props=> props.barExpand?'2px solid #414141':''};;
 	position: relative;
+	transition: border-right .5s ease-in-out;
 `;
 const NavIcon = styled.div`
 	height: 80px;
@@ -57,6 +59,7 @@ const NavIcon = styled.div`
 
 const NavContent = styled.div`
 	flex-grow: 1;
+	min-width: 0; // resolve conflict with white-space and flexbox
 	padding: 0 34px;
 `;
 
@@ -73,6 +76,10 @@ const SlideBtn = styled.div`
     left: -24px;
 	cursor: pointer; 
 `;
+const SlideIcon = styled.div`
+	transform: ${props=> props.barExpand?'rotate(0deg)':'rotate(-180deg)'};
+	// transition: transform .5s ease-in-out;
+`;
 
 const App = () => {
 
@@ -80,12 +87,19 @@ const App = () => {
 	const [task, setTask] = useState({});
 	const [barExpand, setBarExpand] = useState(1);
 	const [barExpandTrans, setBarExpandTrans] = useState(1);
-
-
+	const [musicList, setMusicList] = useState([]);
+	const [nowPlaying, setNowPlaying] = useState();
 
 	useEffect(()=>{
-		console.log(task)
-	}, [task])
+		let local_music = localStorage.getItem('musicList');
+		if(local_music)
+			setMusicList(JSON.parse(local_music));
+	}, [])
+
+	useEffect(()=>{
+		if(musicList.length !== 0)
+			localStorage.setItem('musicList', JSON.stringify(musicList));
+	}, [musicList])
 
   	return (
     	<Wrap>
@@ -95,21 +109,15 @@ const App = () => {
     	    		PODOMORO
     	    	</MainFooter>
     		</MainBlock>
-    		<NavBlock barExpand={barExpand} onTransitionEnd={() => {
+    		<NavBlock barExpand={barExpand} onTransitionEnd={(e) => {
 				if(barExpand){
-					setBarExpandTrans(1)
+					setBarExpandTrans(1);
 				}
 			}}>
-    	    	<NavBar>
+    	    	<NavBar barExpand={barExpand}>
 					<NavIcon onClick={() => setNav('add')} active={nav === 'add'}>
 						<FontAwesomeIcon icon={faPlusCircle} size="lg"/>
 					</NavIcon>
-					{/* <NavIcon onClick={() => setNav('task')} active={nav === 'task'}>
-						<FontAwesomeIcon icon={faBars} size="lg"/>
-					</NavIcon>
-					<NavIcon onClick={() => setNav('chart')} active={nav === 'chart'}>
-						<FontAwesomeIcon icon={faChartBar} size="lg"/>
-					</NavIcon> */}
 					<NavIcon onClick={() => setNav('music')} active={nav === 'music'}>
 						<FontAwesomeIcon icon={faMusic} size="lg"/>
 					</NavIcon>
@@ -121,7 +129,9 @@ const App = () => {
 						else setBarExpand(!barExpand);
 					}}>
 						<TomatoIcon size="m"/>
-						<FontAwesomeIcon icon={faArrowRight} size="lg"/>
+						<SlideIcon barExpand={barExpand}>
+							<FontAwesomeIcon icon={faArrowRight} size="lg"/>
+						</SlideIcon>
 					</SlideBtn>
     	    	</NavBar>
 				{barExpandTrans?
@@ -129,14 +139,21 @@ const App = () => {
 						{nav === 'add'?
 							<AddTask task={task} setTask={setTask}/>
 						:
-							<TaskList task={task} setTask={setTask}/>
+							<MusicList musicList={musicList} setMusicList={setMusicList} nowPlaying={nowPlaying} setNowPlaying={setNowPlaying}/>
 						}
-						
 					</NavContent>
 				:
 					<></>
 				}
     	  	</NavBlock>
+			<ReactPlayer
+				width='0px'
+				height='0px'
+				url={musicList[nowPlaying] && musicList[nowPlaying].url}
+				playing={true}
+				volume={0.2}
+				onEnded={()=>setNowPlaying(pre=>pre+1)}
+			/>
 		</Wrap>
 	);
 }
