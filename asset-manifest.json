@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "/Tomato-Clock/static/js/main.d9a5f8cc.chunk.js",
+    "main.js.map": "/Tomato-Clock/static/js/main.d9a5f8cc.chunk.js.map",
+    "runtime-main.js": "/Tomato-Clock/static/js/runtime-main.a23d74b4.js",
+    "runtime-main.js.map": "/Tomato-Clock/static/js/runtime-main.a23d74b4.js.map",
+    "static/js/2.03aefe58.chunk.js": "/Tomato-Clock/static/js/2.03aefe58.chunk.js",
+    "static/js/2.03aefe58.chunk.js.map": "/Tomato-Clock/static/js/2.03aefe58.chunk.js.map",
+    "index.html": "/Tomato-Clock/index.html",
+    "static/js/2.03aefe58.chunk.js.LICENSE.txt": "/Tomato-Clock/static/js/2.03aefe58.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a23d74b4.js",
+    "static/js/2.03aefe58.chunk.js",
+    "static/js/main.d9a5f8cc.chunk.js"
+  ]
+}
