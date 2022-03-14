@@ -1,17 +1,20 @@
 {
   "files": {
-    "main.js": "/Tomato-Clock/static/js/main.d9a5f8cc.chunk.js",
-    "main.js.map": "/Tomato-Clock/static/js/main.d9a5f8cc.chunk.js.map",
+    "main.css": "/Tomato-Clock/static/css/main.b281421c.chunk.css",
+    "main.js": "/Tomato-Clock/static/js/main.67dc810e.chunk.js",
+    "main.js.map": "/Tomato-Clock/static/js/main.67dc810e.chunk.js.map",
     "runtime-main.js": "/Tomato-Clock/static/js/runtime-main.a23d74b4.js",
     "runtime-main.js.map": "/Tomato-Clock/static/js/runtime-main.a23d74b4.js.map",
     "static/js/2.03aefe58.chunk.js": "/Tomato-Clock/static/js/2.03aefe58.chunk.js",
     "static/js/2.03aefe58.chunk.js.map": "/Tomato-Clock/static/js/2.03aefe58.chunk.js.map",
     "index.html": "/Tomato-Clock/index.html",
+    "static/css/main.b281421c.chunk.css.map": "/Tomato-Clock/static/css/main.b281421c.chunk.css.map",
     "static/js/2.03aefe58.chunk.js.LICENSE.txt": "/Tomato-Clock/static/js/2.03aefe58.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a23d74b4.js",
     "static/js/2.03aefe58.chunk.js",
-    "static/js/main.d9a5f8cc.chunk.js"
+    "static/css/main.b281421c.chunk.css",
+    "static/js/main.67dc810e.chunk.js"
   ]
 }

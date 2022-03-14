@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/style.css"],"names":[],"mappings":"AAAA,gBACE,WACF,CACA,KACE,QACF","file":"main.b281421c.chunk.css","sourcesContent":["html, body, #root{\r\n  height: 100%;\r\n}\r\nbody {\r\n  margin: 0;\r\n}"]}
