@@ -8,6 +8,7 @@ import Clock from './Clock'
 import TomatoIcon from './TomatoIcon'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faMusic, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import './style.css'
 
 const Wrap = styled.div`
   	display: flex;
