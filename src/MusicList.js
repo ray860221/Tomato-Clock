@@ -1,20 +1,20 @@
-import React,{useState} from 'react'
-import styled,{keyframes} from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'
+import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     letter-spacing: 2px;
-    color: #FCFCFC;
+    color: #fcfcfc;
     border-bottom: 1px solid #414141;
     padding: 30px 0;
     margin-bottom: 20px;
 `;
 const Content = styled.div`
     font-size: 14px;
-    color: #ACACAC;
+    color: #acacac;
     letter-spacing: 0.7px;
 `;
 const AddMusicName = styled.div`
@@ -28,13 +28,13 @@ const AddMusicInput = styled.input`
     outline: none;
     border: 0px;
     font-size: 16px;
-    background: #FCFCFC;
+    background: #fcfcfc;
     border-radius: 5px;
     margin-top: 10px;
 `;
 const AddMusicIBtn = styled.div`
-    color: #FCFCFC;
-    background: #EA5548;
+    color: #fcfcfc;
+    background: #ea5548;
     border-radius: 30px;
     text-align: center;
     padding: 18px 0;
@@ -49,12 +49,12 @@ const MusicContainer = styled.div`
     display: flex;
     align-items: center;
     padding: 12px 20px;
-    color: #FCFCFC;
+    color: #fcfcfc;
     letter-spacing: 0.8px;
     border-radius: 2px;
     margin-bottom: 1px;
     cursor: pointer;
-    &:hover{
+    &:hover {
         background: #414141;
     }
 `;
@@ -84,52 +84,47 @@ const MusicTitle = styled.div`
     text-overflow: ellipsis;
 `;
 
-const MusicList = ({musicList, setMusicList, nowPlaying, setNowPlaying}) => {
+const MusicList = ({ musicList, setMusicList, nowPlaying, setNowPlaying }) => {
+    const [url, setUrl] = useState('');
 
-    const [url, setUrl] = useState('')
-
-  	return (
-        <div>
-            <Title>
-                MUSIC LISTS
-            </Title>
+    return (
+        <>
+            <Title>MUSIC LISTS</Title>
             <Content>
                 <AddMusicName>
                     ADD MUSIC
-                    <AddMusicInput value={url} onChange={(e)=>setUrl(e.target.value)}/>
+                    <AddMusicInput value={url} onChange={e => setUrl(e.target.value)} />
                 </AddMusicName>
-                <AddMusicIBtn onClick={()=>{
-                    fetch('https://noembed.com/embed?url='+url)
-                        .then(res => res.json())
-                        .then(data => setMusicList([...musicList, {url: url, title: data.title}]))
-                        .catch(err => console.log(err))
-                    setUrl('');
-                }}>
+                <AddMusicIBtn
+                    onClick={() => {
+                        fetch('https://noembed.com/embed?url=' + url)
+                            .then(res => res.json())
+                            .then(data => setMusicList([...musicList, { url: url, title: data.title }]))
+                            .catch(err => console.log(err));
+                        setUrl('');
+                    }}
+                >
                     ADD
                 </AddMusicIBtn>
                 <Divider />
-                <AddMusicName>
-                    MUSIC LISTS
-                </AddMusicName>
-                {musicList.map((music, index)=>
-                    <MusicContainer key={music.url} onClick={()=>setNowPlaying(index)}>
+                <AddMusicName>MUSIC LISTS</AddMusicName>
+                {musicList.map((music, index) => (
+                    <MusicContainer key={music.url} onClick={() => setNowPlaying(index)}>
                         <div>
-                            {index === nowPlaying?
+                            {index === nowPlaying ? (
                                 <PlayIcon>
-                                    <FontAwesomeIcon icon={faPlayCircle} size="1x"/>
+                                    <FontAwesomeIcon icon={faPlayCircle} size="1x" />
                                 </PlayIcon>
-                                :
-                                <MusicIndex>
-                                    {index+1+'.'}
-                                </MusicIndex>
-                            }
+                            ) : (
+                                <MusicIndex>{index + 1 + '.'}</MusicIndex>
+                            )}
                         </div>
                         <MusicTitle>{music.title}</MusicTitle>
                     </MusicContainer>
-                )}
+                ))}
             </Content>
-		</div>
-	);
-}
+        </>
+    );
+};
 
 export default MusicList;
